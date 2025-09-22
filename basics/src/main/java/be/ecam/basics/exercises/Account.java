@@ -20,12 +20,14 @@ public class Account {
     public void deposit(double amount) {
         if (amount < 0) throw new IllegalArgumentException("amount");
         balance += amount;
+        balance = Math.round(balance * 100.0) / 100.0;
     }
 
     public void withdraw(double amount) {
         if (amount < 0) throw new IllegalArgumentException("amount");
         if (amount > balance) throw new IllegalStateException("insufficient");
         balance -= amount;
+        balance = Math.round(balance * 100.0) / 100.0;
     }
 
     public void transferTo(Account other, double amount) {

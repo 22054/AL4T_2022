@@ -7,9 +7,9 @@ public class NameFormatter {
         private final String lastName;
 
         public Person(String firstName, String middleName, String lastName) {
-            this.firstName = firstName;
-            this.middleName = middleName;
-            this.lastName = lastName;
+            this.firstName = (firstName != null) ? firstName : "";
+            this.middleName = (middleName != null) ? middleName : "";
+            this.lastName = (lastName != null) ? lastName : "";
         }
 
         public String getFirstName() { return firstName; }
