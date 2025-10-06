@@ -1,10 +1,10 @@
 package model.hero;
 
 import manager.CameraInterface;
-import manager.GameEngine;
+import manager.IMarioEngineFacade;
 import view.Animation;
 import model.GameObject;
-import view.ImageLoader;
+import view.IImageLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ public class Mario extends GameObject{
     private MarioForm marioForm;
     private boolean toRight = true;
 
-    public Mario(double x, double y){
+    public Mario(double x, double y, IImageLoader imageLoader){
         super(x, y, null);
         setDimension(48,48);
 
@@ -27,12 +27,11 @@ public class Mario extends GameObject{
         coins = 0;
         invincibilityTimer = 0;
 
-        ImageLoader imageLoader = new ImageLoader();
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
 
         Animation animation = new Animation(leftFrames, rightFrames);
-        marioForm = new MarioForm(animation, false, false);
+        marioForm = new MarioForm(animation, false, false, imageLoader);
         setStyle(marioForm.getCurrentStyle(toRight, false, false));
     }
 
@@ -46,7 +45,7 @@ public class Mario extends GameObject{
         super.draw(g);
     }
 
-    public void jump(GameEngine engine) {
+    public void jump(IMarioEngineFacade engine) {
         if(!isJumping() && !isFalling()){
             setJumping(true);
             setVelY(10);
@@ -65,7 +64,7 @@ public class Mario extends GameObject{
         this.toRight = toRight;
     }
 
-    public boolean onTouchEnemy(GameEngine engine){
+    public boolean onTouchEnemy(IMarioEngineFacade engine){
 
         if(!marioForm.isSuper() && !marioForm.isFire()){
             remainingLives--;
@@ -74,7 +73,7 @@ public class Mario extends GameObject{
         }
         else{
             engine.shakeCamera();
-            marioForm = marioForm.onTouchEnemy(engine.getImageLoader());
+            marioForm = marioForm.onTouchEnemy();
             setDimension(48, 48);
             return false;
         }
