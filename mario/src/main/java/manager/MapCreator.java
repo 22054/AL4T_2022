@@ -79,7 +79,7 @@ class MapCreator implements IMapCreator {
                 int yLocation = y*pixelMultiplier;
 
                 if (currentPixel == ordinaryBrick) {
-                    Brick brick = new OrdinaryBrick(xLocation, yLocation, this.ordinaryBrick);
+                    Brick brick = new OrdinaryBrick(xLocation, yLocation, this.ordinaryBrick, this.imageLoader);
                     createdMap.addBrick(brick);
                 }
                 else if (currentPixel == surpriseBrick) {

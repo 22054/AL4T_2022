@@ -1,6 +1,7 @@
 package manager;
 
 import model.GameObject;
+import model.IBumpable;
 import model.IMap;
 import model.brick.Brick;
 import model.brick.OrdinaryBrick;
@@ -135,6 +136,9 @@ public class MapManager implements IMapManager {
             mario.setFalling(true);
 
         for (Brick brick : bricks) {
+            // Skip non-solid bricks (e.g., breaking)
+            if (brick instanceof model.IBumpable b && !b.isSolidForCollision()) continue;
+
             Rectangle brickTopBounds = brick.getTopBounds();
             if (marioBottomBounds.intersects(brickTopBounds)) {
                 mario.setY(brick.getY() - mario.getDimension().height + 1);
@@ -167,11 +171,14 @@ public class MapManager implements IMapManager {
 
         Rectangle marioTopBounds = mario.getTopBounds();
         for (Brick brick : bricks) {
+            // Skip non-solid bricks (e.g., breaking)
+            if (brick instanceof IBumpable b && !b.isSolidForCollision()) continue;
+
             Rectangle brickBottomBounds = brick.getBottomBounds();
             if (marioTopBounds.intersects(brickBottomBounds)) {
                 mario.setVelY(0);
                 mario.setY(brick.getY() + brick.getDimension().height);
-                Prize prize = brick.reveal(engine);
+                Prize prize = brick.onHeadBump(engine);
                 if(prize != null)
                     map.addRevealedPrize(prize);
             }
@@ -190,6 +197,9 @@ public class MapManager implements IMapManager {
         Rectangle marioBounds = toRight ? mario.getRightBounds() : mario.getLeftBounds();
 
         for (Brick brick : bricks) {
+            // Skip non-solid bricks (e.g., breaking)
+            if (brick instanceof IBumpable b && !b.isSolidForCollision()) continue;
+
             Rectangle brickBounds = !toRight ? brick.getRightBounds() : brick.getLeftBounds();
             if (marioBounds.intersects(brickBounds)) {
                 mario.setVelX(0);
@@ -239,15 +249,19 @@ public class MapManager implements IMapManager {
                     brickBounds = brick.getLeftBounds();
                 }
 
-                if (enemyBounds.intersects(brickBounds)) {
-                    enemy.setVelX(-enemy.getVelX());
-                }
+                if (brick instanceof IBumpable b && !b.isSolidForCollision()) {
+                    // skip non-solid bricks
+                } else {
+                    if (enemyBounds.intersects(brickBounds)) {
+                        enemy.setVelX(-enemy.getVelX());
+                    }
 
-                if (enemyBottomBounds.intersects(brickTopBounds)){
-                    enemy.setFalling(false);
-                    enemy.setVelY(0);
-                    enemy.setY(brick.getY()-enemy.getDimension().height);
-                    standsOnBrick = true;
+                    if (enemyBottomBounds.intersects(brickTopBounds)){
+                        enemy.setFalling(false);
+                        enemy.setVelY(0);
+                        enemy.setY(brick.getY()-enemy.getDimension().height);
+                        standsOnBrick = true;
+                    }
                 }
             }
 
@@ -277,6 +291,11 @@ public class MapManager implements IMapManager {
 
                 for (Brick brick : bricks) {
                     Rectangle brickBounds;
+
+                    if (brick instanceof IBumpable b && !b.isSolidForCollision()) {
+                        // skip non-solid bricks
+                        continue;
+                    }
 
                     if (boost.isFalling()) {
                         brickBounds = brick.getTopBounds();
@@ -354,6 +373,8 @@ public class MapManager implements IMapManager {
             }
 
             for(Brick brick : bricks){
+                if (brick instanceof model.IBumpable b && !b.isSolidForCollision()) continue;
+
                 Rectangle brickBounds = brick.getBounds();
                 if (fireballBounds.intersects(brickBounds)) {
                     toBeRemoved.add(fireball);

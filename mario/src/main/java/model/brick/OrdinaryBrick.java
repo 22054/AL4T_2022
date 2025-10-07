@@ -4,7 +4,7 @@ import manager.GameEngine;
 import manager.IMapManager;
 import model.prize.Prize;
 import view.Animation;
-import view.ImageLoader;
+import view.IImageLoader;
 
 import java.awt.image.BufferedImage;
 
@@ -14,25 +14,28 @@ public class OrdinaryBrick extends Brick {
     private boolean breaking;
     private int frames;
 
-    public OrdinaryBrick(double x, double y, BufferedImage style){
+    public OrdinaryBrick(double x, double y, BufferedImage style, IImageLoader imageLoader){
         super(x, y, style);
         setBreakable(true);
         setEmpty(true);
 
-        setAnimation();
+        setAnimation(imageLoader);
         breaking = false;
         frames = animation.getLeftFrames().length;
     }
 
-    private void setAnimation(){
-        ImageLoader imageLoader = new ImageLoader();
+    private void setAnimation(IImageLoader imageLoader){
         BufferedImage[] leftFrames = imageLoader.getBrickFrames();
-
         animation = new Animation(leftFrames, leftFrames);
     }
 
     @Override
     public Prize reveal(GameEngine engine){
+        return onHeadBump(engine);
+    }
+
+    @Override
+    public Prize onHeadBump(GameEngine engine){
         IMapManager manager = engine.getMapManager();
         if(!manager.getMario().isSuper())
             return null;
@@ -45,6 +48,9 @@ public class OrdinaryBrick extends Brick {
 
         return null;
     }
+
+    @Override
+    public boolean isSolidForCollision() { return !breaking; }
 
     public int getFrames(){
         return frames;
