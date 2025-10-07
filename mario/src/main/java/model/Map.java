@@ -10,7 +10,6 @@ import model.prize.Coin;
 import model.prize.Prize;
 
 import java.awt.*;
-import model.IRenderable;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,15 +19,14 @@ public class Map implements IMap {
 
     private double remainingTime;
     private Mario mario;
-    private ArrayList<Brick> bricks = new ArrayList<>();
-    private ArrayList<Enemy> enemies = new ArrayList<>();
-    private ArrayList<Brick> groundBricks = new ArrayList<>();
-    private ArrayList<Prize> revealedPrizes = new ArrayList<>();
-    private ArrayList<Brick> revealedBricks = new ArrayList<>();
-    private ArrayList<Fireball> fireballs = new ArrayList<>();
+    private final ArrayList<Brick> bricks = new ArrayList<>();
+    private final ArrayList<Enemy> enemies = new ArrayList<>();
+    private final ArrayList<Brick> groundBricks = new ArrayList<>();
+    private final ArrayList<Prize> revealedPrizes = new ArrayList<>();
+    private final ArrayList<Brick> revealedBricks = new ArrayList<>();
+    private final ArrayList<Fireball> fireballs = new ArrayList<>();
     private EndFlag endPoint;
-    private BufferedImage backgroundImage;
-    private double bottomBorder = 720 - 96;
+    private final BufferedImage backgroundImage;
     private String path;
 
     // Cached renderables list to avoid rebuilding each frame; invalidated on mutations
@@ -100,7 +98,7 @@ public class Map implements IMap {
     public void drawMap(Graphics2D g2){
         // Draw static background first
         drawBackground(g2);
-        // Draw all renderables in order to respect layering without type checks (OCP)
+        // Draw all renderables in order, respecting layering without type checks (OCP)
         for (IRenderable renderable : getRenderablesInDrawOrder()) {
             if (renderable != null) {
                 renderable.draw(g2);
@@ -142,47 +140,8 @@ public class Map implements IMap {
         return renderablesInDrawOrder;
     }
 
-    private void drawFireballs(Graphics2D g2) {
-        for(Fireball fireball : fireballs){
-            fireball.draw(g2);
-        }
-    }
-
-    private void drawPrizes(Graphics2D g2) {
-        for(Prize prize : revealedPrizes){
-            if(prize instanceof Coin){
-                ((Coin) prize).draw(g2);
-            }
-            else if(prize instanceof  BoostItem){
-                ((BoostItem) prize).draw(g2);
-            }
-        }
-    }
-
     private void drawBackground(Graphics2D g2){
         g2.drawImage(backgroundImage, 0, 0, null);
-    }
-
-    private void drawBricks(Graphics2D g2) {
-        for(Brick brick : bricks){
-            if(brick != null)
-                brick.draw(g2);
-        }
-
-        for(Brick brick : groundBricks){
-            brick.draw(g2);
-        }
-    }
-
-    private void drawEnemies(Graphics2D g2) {
-        for(Enemy enemy : enemies){
-            if(enemy != null)
-                enemy.draw(g2);
-        }
-    }
-
-    private void drawMario(Graphics2D g2) {
-        mario.draw(g2);
     }
 
     @Override
@@ -225,7 +184,7 @@ public class Map implements IMap {
 
     @Override
     public double getBottomBorder() {
-        return bottomBorder;
+        return 720 - 96;
     }
 
     @Override
