@@ -20,6 +20,10 @@ Hard GameEngine dependency in Mario class.
 
 ### Violation of OCP in MapCreator
 
+### Violation of OCP in Map.drawMap()
+
+It seems like we could iterate on a list of IRenderable instead.
+
 Big "if-else".
 
 ## Bugs
