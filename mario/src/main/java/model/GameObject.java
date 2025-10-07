@@ -3,23 +3,20 @@ package model;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public abstract class GameObject {
+public abstract class GameObject implements IRenderable, IPhysical {
 
-    private double x, y;
-
-    private double velX, velY;
-
+    private final PhysicsBody physics;
+    private final SpriteRenderer renderer;
     private Dimension dimension;
 
-    private BufferedImage style;
-
-    private double gravityAcc;
-
-    private boolean falling, jumping;
-
     public GameObject(double x, double y, BufferedImage style){
-        setLocation(x, y);
-        setStyle(style);
+        this.physics = new PhysicsBody(x, y);
+        this.renderer = new SpriteRenderer(new SpriteRenderer.PositionProvider() {
+            @Override
+            public double getX() { return physics.getX(); }
+            @Override
+            public double getY() { return physics.getY(); }
+        }, style);
 
         if(style != null){
             setDimension(style.getWidth(), style.getHeight());
@@ -28,16 +25,13 @@ public abstract class GameObject {
         setVelX(0);
         setVelY(0);
         setGravityAcc(0.38);
-        jumping = false;
-        falling = true;
+        setJumping(false);
+        setFalling(true);
     }
 
+    @Override
     public void draw(Graphics g) {
-        BufferedImage style = getStyle();
-
-        if(style != null){
-            g.drawImage(style, (int)x, (int)y, null);
-        }
+        renderer.draw(g);
 
         //for debugging
         /*Graphics2D g2 = (Graphics2D)g;
@@ -49,22 +43,9 @@ public abstract class GameObject {
         g2.draw(getLeftBounds());*/
     }
 
+    @Override
     public void updateLocation() {
-        if(jumping && velY <= 0){
-            jumping = false;
-            falling = true;
-        }
-        else if(jumping){
-            velY = velY - gravityAcc;
-            y = y - velY;
-        }
-
-        if(falling){
-            y = y + velY;
-            velY = velY + gravityAcc;
-        }
-
-        x = x + velX;
+        physics.updateLocation();
     }
 
     public void setLocation(double x, double y) {
@@ -72,20 +53,24 @@ public abstract class GameObject {
         setY(y);
     }
 
+    @Override
     public double getX() {
-        return x;
+        return physics.getX();
     }
 
+    @Override
     public void setX(double x) {
-        this.x = x;
+        physics.setX(x);
     }
 
+    @Override
     public double getY() {
-        return y;
+        return physics.getY();
     }
 
+    @Override
     public void setY(double y) {
-        this.y = y;
+        physics.setY(y);
     }
 
     public Dimension getDimension(){
@@ -98,71 +83,83 @@ public abstract class GameObject {
 
     public void setDimension(int width, int height){ this.dimension =  new Dimension(width, height); }
 
+    @Override
     public BufferedImage getStyle() {
-        return style;
+        return renderer.getStyle();
     }
 
+    @Override
     public void setStyle(BufferedImage style) {
-        this.style = style;
+        renderer.setStyle(style);
     }
 
+    @Override
     public double getVelX() {
-        return velX;
+        return physics.getVelX();
     }
 
+    @Override
     public void setVelX(double velX) {
-        this.velX = velX;
+        physics.setVelX(velX);
     }
 
+    @Override
     public double getVelY() {
-        return velY;
+        return physics.getVelY();
     }
 
+    @Override
     public void setVelY(double velY) {
-        this.velY = velY;
+        physics.setVelY(velY);
     }
 
+    @Override
     public double getGravityAcc() {
-        return gravityAcc;
+        return physics.getGravityAcc();
     }
 
+    @Override
     public void setGravityAcc(double gravityAcc) {
-        this.gravityAcc = gravityAcc;
+        physics.setGravityAcc(gravityAcc);
     }
 
     public Rectangle getTopBounds(){
-        return new Rectangle((int)x+dimension.width/6, (int)y, 2*dimension.width/3, dimension.height/2);
+        return new Rectangle((int)getX()+dimension.width/6, (int)getY(), 2*dimension.width/3, dimension.height/2);
     }
 
     public Rectangle getBottomBounds(){
-        return new Rectangle((int)x+dimension.width/6, (int)y + dimension.height/2, 2*dimension.width/3, dimension.height/2);
+        return new Rectangle((int)getX()+dimension.width/6, (int)getY() + dimension.height/2, 2*dimension.width/3, dimension.height/2);
     }
 
     public Rectangle getLeftBounds(){
-        return new Rectangle((int)x, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);
+        return new Rectangle((int)getX(), (int)getY() + dimension.height/4, dimension.width/4, dimension.height/2);
     }
 
     public Rectangle getRightBounds(){
-        return new Rectangle((int)x + 3*dimension.width/4, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);
+        return new Rectangle((int)getX() + 3*dimension.width/4, (int)getY() + dimension.height/4, dimension.width/4, dimension.height/2);
     }
 
     public Rectangle getBounds(){
-        return new Rectangle((int)x, (int)y, dimension.width, dimension.height);
+        return new Rectangle((int)getX(), (int)getY(), dimension.width, dimension.height);
     }
 
+    @Override
     public boolean isFalling() {
-        return falling;
+        return physics.isFalling();
     }
 
+    @Override
     public void setFalling(boolean falling) {
-        this.falling = falling;
+        physics.setFalling(falling);
     }
 
+    @Override
     public boolean isJumping() {
-        return jumping;
+        return physics.isJumping();
     }
 
+    @Override
     public void setJumping(boolean jumping) {
-        this.jumping = jumping;
+        physics.setJumping(jumping);
     }
 }
