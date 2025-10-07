@@ -11,8 +11,6 @@ public abstract class Brick extends GameObject implements IBumpable {
 
     private boolean breakable;
 
-    private boolean empty;
-
     public Brick(double x, double y, BufferedImage style){
         super(x, y, style);
         setDimension(48, 48);
@@ -31,14 +29,6 @@ public abstract class Brick extends GameObject implements IBumpable {
 
     public void setBreakable(boolean breakable) {
         this.breakable = breakable;
-    }
-
-    public boolean isEmpty() {
-        return empty;
-    }
-
-    public void setEmpty(boolean empty) {
-        this.empty = empty;
     }
 
     // Legacy API: subclasses may override reveal; default is no prize

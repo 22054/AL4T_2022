@@ -14,7 +14,6 @@ public class Mario extends GameObject{
     private int remainingLives;
     private int coins;
     private int points;
-    private double invincibilityTimer;
     private MarioForm marioForm;
     private boolean toRight = true;
 
@@ -26,7 +25,6 @@ public class Mario extends GameObject{
         remainingLives = 3;
         points = 0;
         coins = 0;
-        invincibilityTimer = 0;
 
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);

@@ -6,7 +6,6 @@ import model.prize.*;
 import view.IImageLoader;
 import model.IMap;
 import model.Map;
-import model.enemy.Enemy;
 import model.enemy.Goomba;
 import model.enemy.KoopaTroopa;
 import model.hero.Mario;
@@ -96,13 +95,13 @@ class MapCreator implements IMapCreator {
                     createdMap.addGroundBrick(brick);
                 }
                 else if (currentPixel == goomba) {
-                    Enemy enemy = new Goomba(xLocation, yLocation, this.goombaLeft);
-                    ((Goomba)enemy).setRightImage(goombaRight);
+                    Goomba enemy = new Goomba(xLocation, yLocation, this.goombaLeft);
+                    enemy.setRightImage(goombaRight);
                     createdMap.addEnemy(enemy);
                 }
                 else if (currentPixel == koopa) {
-                    Enemy enemy = new KoopaTroopa(xLocation, yLocation, this.koopaLeft);
-                    ((KoopaTroopa)enemy).setRightImage(koopaRight);
+                    KoopaTroopa enemy = new KoopaTroopa(xLocation, yLocation, this.koopaLeft);
+                    enemy.setRightImage(koopaRight);
                     createdMap.addEnemy(enemy);
                 }
                 else if (currentPixel == mario) {

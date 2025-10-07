@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class MapManager implements IMapManager {
 
     private IMap map;
-    private IMapCreator mapCreator;
+    private final IMapCreator mapCreator;
 
     public MapManager(IMapCreator mapCreator) {
         this.mapCreator = mapCreator;
@@ -249,9 +249,7 @@ public class MapManager implements IMapManager {
                     brickBounds = brick.getLeftBounds();
                 }
 
-                if (brick instanceof IBumpable b && !b.isSolidForCollision()) {
-                    // skip non-solid bricks
-                } else {
+                if (brick.isSolidForCollision()) {
                     if (enemyBounds.intersects(brickBounds)) {
                         enemy.setVelX(-enemy.getVelX());
                     }
@@ -282,8 +280,7 @@ public class MapManager implements IMapManager {
         ArrayList<Brick> bricks = map.getAllBricks();
 
         for (Prize prize : prizes) {
-            if (prize instanceof BoostItem) {
-                BoostItem boost = (BoostItem) prize;
+            if (prize instanceof BoostItem boost) {
                 Rectangle prizeBottomBounds = boost.getBottomBounds();
                 Rectangle prizeRightBounds = boost.getRightBounds();
                 Rectangle prizeLeftBounds = boost.getLeftBounds();
