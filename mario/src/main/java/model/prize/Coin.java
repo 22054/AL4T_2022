@@ -20,6 +20,7 @@ public class Coin extends GameObject implements Prize{
         revealed = false;
         setDimension(30, 42);
         revealBoundary = (int)getY() - getDimension().height;
+        setRenderLayer(1);
     }
 
     @Override

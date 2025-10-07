@@ -16,6 +16,13 @@ public abstract class Brick extends GameObject{
     public Brick(double x, double y, BufferedImage style){
         super(x, y, style);
         setDimension(48, 48);
+        setRenderLayer(2);
+    }
+
+    // Bricks are static; prevent physics updates so they don't fall through ground
+    @Override
+    public void updateLocation() {
+        // no-op for static bricks
     }
 
     public boolean isBreakable() {

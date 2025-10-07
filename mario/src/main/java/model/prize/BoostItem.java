@@ -16,6 +16,7 @@ public abstract class BoostItem extends GameObject implements Prize{
     public BoostItem(double x, double y, BufferedImage style) {
         super(x, y, style);
         setDimension(48, 48);
+        setRenderLayer(1);
     }
 
     public abstract void onTouch(Mario mario, GameEngine engine);

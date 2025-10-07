@@ -13,6 +13,7 @@ public class Fireball extends GameObject {
         setFalling(false);
         setJumping(false);
         setVelX(10);
+        setRenderLayer(5);
 
         if(!toRight)
             setVelX(-5);

@@ -11,5 +11,6 @@ public abstract class Enemy extends GameObject{
         super(x, y, style);
         setFalling(false);
         setJumping(false);
+        setRenderLayer(4);
     }
 }

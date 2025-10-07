@@ -8,6 +8,7 @@ public abstract class GameObject implements IRenderable, IPhysical {
     private final PhysicsBody physics;
     private final SpriteRenderer renderer;
     private Dimension dimension;
+    protected int renderLayer = 100;
 
     public GameObject(double x, double y, BufferedImage style){
         this.physics = new PhysicsBody(x, y);
@@ -92,6 +93,11 @@ public abstract class GameObject implements IRenderable, IPhysical {
     public void setStyle(BufferedImage style) {
         renderer.setStyle(style);
     }
+
+    @Override
+    public int getRenderLayer() { return renderLayer; }
+
+    protected void setRenderLayer(int layer) { this.renderLayer = layer; }
 
     @Override
     public double getVelX() {

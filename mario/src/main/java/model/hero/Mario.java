@@ -21,6 +21,7 @@ public class Mario extends GameObject{
     public Mario(double x, double y, IImageLoader imageLoader){
         super(x, y, null);
         setDimension(48,48);
+        setRenderLayer(6);
 
         remainingLives = 3;
         points = 0;

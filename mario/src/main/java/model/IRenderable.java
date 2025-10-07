@@ -10,4 +10,7 @@ public interface IRenderable {
     void draw(Graphics g);
     BufferedImage getStyle();
     void setStyle(BufferedImage style);
+
+    // Render layer for draw ordering. Lower numbers are drawn earlier (behind).
+    default int getRenderLayer() { return 100; }
 }

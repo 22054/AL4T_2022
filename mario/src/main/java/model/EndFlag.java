@@ -8,6 +8,7 @@ public class EndFlag extends GameObject{
 
     public EndFlag(double x, double y, BufferedImage style) {
         super(x, y, style);
+        setRenderLayer(7);
     }
 
     @Override
