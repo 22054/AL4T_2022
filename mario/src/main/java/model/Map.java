@@ -1,12 +1,10 @@
 package model;
 
 import model.brick.Brick;
-import model.brick.GroundBrick;
 import model.brick.OrdinaryBrick;
 import model.enemy.Enemy;
 import model.hero.Fireball;
 import model.hero.Mario;
-import model.prize.BoostItem;
 import model.prize.Coin;
 import model.prize.Prize;
 
@@ -14,7 +12,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class Map implements IMap {
@@ -151,14 +148,12 @@ public class Map implements IMap {
             }
 
             // lifecycle management for objects that should disappear after animation
-            if (r instanceof Coin) {
-                Coin c = (Coin) r;
+            if (r instanceof Coin c) {
                 if (c.getRevealBoundary() > c.getY()) {
                     renderables.remove(r);
                     renderablesDirty = true;
                 }
-            } else if (r instanceof OrdinaryBrick) {
-                OrdinaryBrick ob = (OrdinaryBrick) r;
+            } else if (r instanceof OrdinaryBrick ob) {
                 ob.animate();
                 if (ob.getFrames() < 0) {
                     renderables.remove(r);
