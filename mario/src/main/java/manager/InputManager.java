@@ -6,12 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 
-public class InputManager implements KeyListener, MouseListener{
-
-    private GameEngine engine;
-
-    public InputManager(GameEngine engine) {
-        this.engine = engine; }
+public record InputManager(GameEngine engine) implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent event) {
@@ -20,32 +15,26 @@ public class InputManager implements KeyListener, MouseListener{
         ButtonAction currentAction = ButtonAction.NO_ACTION;
 
         if (keyCode == KeyEvent.VK_UP) {
-            if(status == GameStatus.START_SCREEN || status == GameStatus.MAP_SELECTION)
+            if (status == GameStatus.START_SCREEN || status == GameStatus.MAP_SELECTION)
                 currentAction = ButtonAction.GO_UP;
             else
                 currentAction = ButtonAction.JUMP;
-        }
-        else if(keyCode == KeyEvent.VK_DOWN){
-            if(status == GameStatus.START_SCREEN || status == GameStatus.MAP_SELECTION)
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            if (status == GameStatus.START_SCREEN || status == GameStatus.MAP_SELECTION)
                 currentAction = ButtonAction.GO_DOWN;
-        }
-        else if (keyCode == KeyEvent.VK_RIGHT) {
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
             currentAction = ButtonAction.M_RIGHT;
-        }
-        else if (keyCode == KeyEvent.VK_LEFT) {
+        } else if (keyCode == KeyEvent.VK_LEFT) {
             currentAction = ButtonAction.M_LEFT;
-        }
-        else if (keyCode == KeyEvent.VK_ENTER) {
+        } else if (keyCode == KeyEvent.VK_ENTER) {
             currentAction = ButtonAction.SELECT;
-        }
-        else if (keyCode == KeyEvent.VK_ESCAPE) {
-            if(status == GameStatus.RUNNING || status == GameStatus.PAUSED )
+        } else if (keyCode == KeyEvent.VK_ESCAPE) {
+            if (status == GameStatus.RUNNING || status == GameStatus.PAUSED)
                 currentAction = ButtonAction.PAUSE_RESUME;
             else
                 currentAction = ButtonAction.GO_TO_START_SCREEN;
 
-        }
-        else if (keyCode == KeyEvent.VK_SPACE){
+        } else if (keyCode == KeyEvent.VK_SPACE) {
             currentAction = ButtonAction.FIRE;
         }
 
@@ -55,34 +44,39 @@ public class InputManager implements KeyListener, MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(engine.getGameStatus() == GameStatus.MAP_SELECTION){
+        if (engine.getGameStatus() == GameStatus.MAP_SELECTION) {
             engine.uiManager.selectMapViaMouse();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent event) {
-        if(event.getKeyCode() == KeyEvent.VK_RIGHT || event.getKeyCode() == KeyEvent.VK_LEFT)
+        if (event.getKeyCode() == KeyEvent.VK_RIGHT || event.getKeyCode() == KeyEvent.VK_LEFT)
             notifyInput(ButtonAction.ACTION_COMPLETED);
     }
 
     private void notifyInput(ButtonAction action) {
-        if(action != ButtonAction.NO_ACTION)
+        if (action != ButtonAction.NO_ACTION)
             engine.uiManager.receiveInput(action);
     }
 
     @Override
-    public void keyTyped(KeyEvent arg0) {}
+    public void keyTyped(KeyEvent arg0) {
+    }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 }
