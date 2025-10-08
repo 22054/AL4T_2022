@@ -21,17 +21,17 @@ import java.io.InputStream;
 
 public class UIManager extends JPanel{
 
-    private GameEngine engine;
+    private final GameEngine engine;
     private Font gameFont;
-    private ImageResourceManager imageResourceManager;
-    private ScreenRenderer startScreenRenderer;
-    private ScreenRenderer mapSelectionScreenRenderer;
-    private ScreenRenderer aboutScreenRenderer;
-    private ScreenRenderer helpScreenRenderer;
-    private ScreenRenderer gameOverScreenRenderer;
-    private ScreenRenderer pauseScreenRenderer;
-    private ScreenRenderer victoryScreenRenderer;
-    private MapSelection mapSelection;
+    private final ImageResourceManager imageResourceManager;
+    private final ScreenRenderer startScreenRenderer;
+    private final ScreenRenderer mapSelectionScreenRenderer;
+    private final ScreenRenderer aboutScreenRenderer;
+    private final ScreenRenderer helpScreenRenderer;
+    private final ScreenRenderer gameOverScreenRenderer;
+    private final ScreenRenderer pauseScreenRenderer;
+    private final ScreenRenderer victoryScreenRenderer;
+    private final MapSelection mapSelection;
     public int selectedMap = 0;
     public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
 
