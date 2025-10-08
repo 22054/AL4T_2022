@@ -1,14 +1,12 @@
 package view;
 
 import manager.GameEngine;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class ImageResourceManager {
 
-    private BufferedImage startScreenImage, aboutScreenImage, helpScreenImage, gameOverScreen;
-    private BufferedImage heartIcon, coinIcon, selectIcon;
+    private final BufferedImage startScreenImage, aboutScreenImage, helpScreenImage, gameOverScreen;
+    private final BufferedImage heartIcon, coinIcon, selectIcon;
 
     public ImageResourceManager(GameEngine engine) {
         IImageLoader loader = engine.getImageLoader();
