@@ -25,11 +25,6 @@ public class Map implements IMap {
     // Unified renderables registry; draw order is derived via a layer comparator
     private final List<IRenderable> renderables = new ArrayList<>();
 
-    // Cached, sorted view; invalidated on mutations
-    private List<IRenderable> renderablesInDrawOrder = new ArrayList<>();
-    private boolean renderablesDirty = true;
-
-
     public Map(double remainingTime, BufferedImage backgroundImage) {
         this.backgroundImage = backgroundImage;
         this.remainingTime = remainingTime;
@@ -51,13 +46,12 @@ public class Map implements IMap {
         if (mario != null) {
             renderables.add(mario);
         }
-        this.renderablesDirty = true;
     }
 
     @Override
     public ArrayList<Enemy> getEnemies() {
         ArrayList<Enemy> list = new ArrayList<>();
-        for (IRenderable r : renderables) {
+        for (IRenderable r : new ArrayList<>(renderables)) {
             if (r instanceof Enemy) list.add((Enemy) r);
         }
         return list;
@@ -66,7 +60,7 @@ public class Map implements IMap {
     @Override
     public ArrayList<Fireball> getFireballs() {
         ArrayList<Fireball> list = new ArrayList<>();
-        for (IRenderable r : renderables) {
+        for (IRenderable r : new ArrayList<>(renderables)) {
             if (r instanceof Fireball) list.add((Fireball) r);
         }
         return list;
@@ -75,7 +69,7 @@ public class Map implements IMap {
     @Override
     public ArrayList<Prize> getRevealedPrizes() {
         ArrayList<Prize> list = new ArrayList<>();
-        for (IRenderable r : renderables) {
+        for (IRenderable r : new ArrayList<>(renderables)) {
             if (r instanceof Prize) list.add((Prize) r);
         }
         return list;
@@ -84,7 +78,7 @@ public class Map implements IMap {
     @Override
     public ArrayList<Brick> getAllBricks() {
         ArrayList<Brick> allBricks = new ArrayList<>();
-        for (IRenderable r : renderables) {
+        for (IRenderable r : new ArrayList<>(renderables)) {
             if (r instanceof Brick) allBricks.add((Brick) r);
         }
         return allBricks;
@@ -93,48 +87,35 @@ public class Map implements IMap {
     @Override
     public void addBrick(Brick brick) {
         this.renderables.add(brick);
-        this.renderablesDirty = true;
     }
 
     @Override
     public void addGroundBrick(Brick brick) {
         this.renderables.add(brick);
-        this.renderablesDirty = true;
     }
 
     @Override
     public void addEnemy(Enemy enemy) {
         this.renderables.add(enemy);
-        this.renderablesDirty = true;
     }
 
     @Override
-    public void drawMap(Graphics2D g2){
+    public void drawMap(Graphics2D g2) {
         // Draw static background first
         drawBackground(g2);
+        // Work on a snapshot to avoid ConcurrentModificationException and avoid mutating shared order
+        List<IRenderable> toDraw = new ArrayList<>(renderables);
+        toDraw.sort(Comparator.comparingInt(IRenderable::getRenderLayer));
         // Draw all renderables in order
-        for (IRenderable renderable : getRenderablesInDrawOrder()) {
+        for (IRenderable renderable : toDraw) {
             if (renderable != null) {
                 renderable.draw(g2);
             }
         }
     }
 
-    // Aggregates all renderable entities in the correct drawing order
-    private List<IRenderable> getRenderablesInDrawOrder() {
-        if (!renderablesDirty && renderablesInDrawOrder != null) {
-            return renderablesInDrawOrder;
-        }
 
-        // rebuild cache by sorting unified registry based on each object's own layer
-        renderablesInDrawOrder = new ArrayList<>(renderables);
-        renderablesInDrawOrder.sort(Comparator.comparingInt(IRenderable::getRenderLayer));
-
-        renderablesDirty = false;
-        return renderablesInDrawOrder;
-    }
-
-    private void drawBackground(Graphics2D g2){
+    private void drawBackground(Graphics2D g2) {
         g2.drawImage(backgroundImage, 0, 0, null);
     }
 
@@ -151,13 +132,11 @@ public class Map implements IMap {
             if (r instanceof Coin c) {
                 if (c.getRevealBoundary() > c.getY()) {
                     renderables.remove(r);
-                    renderablesDirty = true;
                 }
             } else if (r instanceof OrdinaryBrick ob) {
                 ob.animate();
                 if (ob.getFrames() < 0) {
                     renderables.remove(r);
-                    renderablesDirty = true;
                 }
             }
         }
@@ -177,13 +156,11 @@ public class Map implements IMap {
         if (prize instanceof IRenderable) {
             renderables.add((IRenderable) prize);
         }
-        this.renderablesDirty = true;
     }
 
     @Override
     public void addFireball(Fireball fireball) {
         renderables.add(fireball);
-        this.renderablesDirty = true;
     }
 
     @Override
@@ -196,7 +173,6 @@ public class Map implements IMap {
         if (endPoint != null) {
             renderables.add(endPoint);
         }
-        this.renderablesDirty = true;
     }
 
     @Override
@@ -206,26 +182,22 @@ public class Map implements IMap {
 
     @Override
     public void addRevealedBrick(OrdinaryBrick ordinaryBrick) {
-        // no dedicated list; brick will animate and be removed when finished in updateLocations
-        this.renderablesDirty = true;
+        // no-op: handled via updateLocations lifecycle
     }
 
     @Override
     public void removeFireball(Fireball object) {
         renderables.remove(object);
-        this.renderablesDirty = true;
     }
 
     @Override
     public void removeEnemy(Enemy object) {
         renderables.remove(object);
-        this.renderablesDirty = true;
     }
 
     @Override
     public void removePrize(Prize object) {
         renderables.remove(object);
-        this.renderablesDirty = true;
     }
 
     @Override
@@ -239,12 +211,12 @@ public class Map implements IMap {
     }
 
     @Override
-    public void updateTime(double passed){
+    public void updateTime(double passed) {
         remainingTime = remainingTime - passed;
     }
 
     @Override
-    public boolean isTimeOver(){
+    public boolean isTimeOver() {
         return remainingTime <= 0;
     }
 

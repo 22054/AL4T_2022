@@ -36,6 +36,9 @@ public class UIManager extends JPanel{
     public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
 
     public UIManager(GameEngine engine, int width, int height) {
+        // Assign engine early to avoid paint being called with a null engine
+        this.engine = engine;
+
         setPreferredSize(new Dimension(width, height));
         setMaximumSize(new Dimension(width, height));
         setMinimumSize(new Dimension(width, height));
@@ -50,11 +53,12 @@ public class UIManager extends JPanel{
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
 
         mapSelection = new MapSelection();
-        this.engine = engine;
         this.imageResourceManager = new ImageResourceManager(engine);
+
+        // Make frame visible after members are initialized
+        frame.setVisible(true);
 
         this.startScreenRenderer = new StartScreenRenderer(this);
         this.mapSelectionScreenRenderer = new MapSelectionScreenRenderer(this);
