@@ -10,9 +10,10 @@ public class MarioForm {
     public static final int SMALL = 0, SUPER = 1, FIRE = 2;
 
     private final IImageLoader imageLoader;
-    private Animation animation;
-    private boolean isSuper, isFire; //note: fire form has priority over super form
-    private BufferedImage fireballStyle;
+    private final Animation animation;
+    private boolean isSuper;
+    private final boolean isFire; //note: fire form has priority over super form
+    private final BufferedImage fireballStyle;
 
     public MarioForm(Animation animation, boolean isSuper, boolean isFire, IImageLoader imageLoader){
         this.animation = animation;
