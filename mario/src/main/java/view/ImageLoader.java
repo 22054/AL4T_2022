@@ -2,13 +2,12 @@ package view;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class ImageLoader implements IImageLoader {
 
-    private BufferedImage marioForms;
-    private BufferedImage brickAnimation;
+    private final BufferedImage marioForms;
+    private final BufferedImage brickAnimation;
 
     public ImageLoader(){
         marioForms = loadImage("/mario-forms.png");
@@ -21,19 +20,6 @@ public class ImageLoader implements IImageLoader {
 
         try {
             imageToReturn = ImageIO.read(getClass().getResource("/media" + path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return imageToReturn;
-    }
-
-    @Override
-    public BufferedImage loadImage(File file){
-        BufferedImage imageToReturn = null;
-
-        try {
-            imageToReturn = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
