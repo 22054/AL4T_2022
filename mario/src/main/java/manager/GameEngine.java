@@ -3,7 +3,6 @@ package manager;
 import model.hero.Mario;
 import view.IImageLoader;
 import view.ImageLoader;
-import view.StartScreenSelection;
 import view.UIManager;
 
 import javax.swing.*;
@@ -15,18 +14,17 @@ public class GameEngine implements Runnable, IMarioEngineFacade {
 
     public IMapManager mapManager;
     public UIManager uiManager;
-    private ISoundManager soundManager;
+    private final ISoundManager soundManager;
     public GameStatus gameStatus;
     private boolean isRunning;
     public CameraInterface camera;
-    private IImageLoader imageLoader;
+    private final IImageLoader imageLoader;
     private Thread thread;
 
     private GameEngine(CameraInterface camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
         this.imageLoader = imageLoader;
         this.camera = camera;
         gameStatus = GameStatus.START_SCREEN;
-        camera = new Camera();
         uiManager = new UIManager(this, WIDTH, HEIGHT);
         this.soundManager = soundManager;
         this.mapManager = mapManager;
