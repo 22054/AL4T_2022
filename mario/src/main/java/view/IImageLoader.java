@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public interface IImageLoader {
     BufferedImage loadImage(String path);
