@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class SoundManager implements ISoundManager {
 
-    private Clip background;
+    private final Clip background;
     private long clipTime = 0;
 
     public SoundManager() {
@@ -18,13 +18,13 @@ public class SoundManager implements ISoundManager {
     private AudioInputStream loadAudio(String url) {
         try {
             InputStream audioSrc = getClass().getResourceAsStream("/media/audio/" + url + ".wav");
+            assert audioSrc != null;
             InputStream bufferedIn = new BufferedInputStream(audioSrc);
             return AudioSystem.getAudioInputStream(bufferedIn);
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
         return null;
     }
 
@@ -36,7 +36,6 @@ public class SoundManager implements ISoundManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -61,6 +60,7 @@ public class SoundManager implements ISoundManager {
     @Override
     public void playJump() {
         Clip clip = getClip(loadAudio("jump"));
+        assert clip != null;
         clip.start();
 
     }
@@ -68,52 +68,50 @@ public class SoundManager implements ISoundManager {
     @Override
     public void playCoin() {
         Clip clip = getClip(loadAudio("coin"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playFireball() {
         Clip clip = getClip(loadAudio("fireball"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playGameOver() {
         Clip clip = getClip(loadAudio("gameOver"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playStomp() {
         Clip clip = getClip(loadAudio("stomp"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playOneUp() {
         Clip clip = getClip(loadAudio("oneUp"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playSuperMushroom() {
-
         Clip clip = getClip(loadAudio("superMushroom"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
     public void playMarioDies() {
-
         Clip clip = getClip(loadAudio("marioDies"));
+        assert clip != null;
         clip.start();
-
     }
 
     @Override
