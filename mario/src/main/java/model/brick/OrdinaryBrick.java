@@ -16,8 +16,6 @@ public class OrdinaryBrick extends Brick {
 
     public OrdinaryBrick(double x, double y, BufferedImage style, IImageLoader imageLoader){
         super(x, y, style);
-        setBreakable(true);
-        setEmpty(true);
 
         setAnimation(imageLoader);
         breaking = false;
