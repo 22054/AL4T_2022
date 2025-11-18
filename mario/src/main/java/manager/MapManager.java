@@ -16,11 +16,14 @@ import view.IImageLoader;
 import java.awt.*;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 public class MapManager implements IMapManager {
 
     private IMap map;
     private final IMapCreator mapCreator;
 
+    @Inject
     public MapManager(IMapCreator mapCreator) {
         this.mapCreator = mapCreator;
     }

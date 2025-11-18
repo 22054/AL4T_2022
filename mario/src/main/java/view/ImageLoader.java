@@ -3,12 +3,14 @@ package view;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.inject.Inject;
 
 public class ImageLoader implements IImageLoader {
 
     private final BufferedImage marioForms;
     private final BufferedImage brickAnimation;
 
+    @Inject
     public ImageLoader(){
         marioForms = loadImage("/mario-forms.png");
         brickAnimation = loadImage("/brick-animation.png");

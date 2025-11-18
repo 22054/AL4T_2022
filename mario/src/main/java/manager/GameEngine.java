@@ -2,11 +2,13 @@ package manager;
 
 import model.hero.Mario;
 import view.IImageLoader;
-import view.ImageLoader;
 import view.UIManager;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.inject.Inject;
+
+import di.DaggerMarioComponent;
 
 public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
 
@@ -21,7 +23,8 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     private final IImageLoader imageLoader;
     private Thread thread;
 
-    private GameEngine(CameraInterface camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
+    @Inject
+    public GameEngine(CameraInterface camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
         this.imageLoader = imageLoader;
         this.camera = camera;
         gameStatus = GameStatus.START_SCREEN;
@@ -249,8 +252,9 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     public static void main(String... args) {
-
-        new GameEngine(new Camera(),new ImageLoader(),new SoundManager(), new MapManager(new MapCreator()));
+        di.MarioComponent component = DaggerMarioComponent.create();
+        // Constructing the engine starts the game as per constructor
+        component.gameEngine();
     }
 
     public int getRemainingTime() {

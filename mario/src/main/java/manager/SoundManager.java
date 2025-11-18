@@ -5,12 +5,14 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import javax.inject.Inject;
 
 public class SoundManager implements ISoundManager {
 
     private final Clip background;
     private long clipTime = 0;
 
+    @Inject
     public SoundManager() {
         background = getClip(loadAudio("background"));
     }

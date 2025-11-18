@@ -13,7 +13,9 @@ import model.hero.Mario;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-class MapCreator implements IMapCreator {
+import javax.inject.Inject;
+
+public class MapCreator implements IMapCreator {
 
     private IImageLoader imageLoader;
 
@@ -23,7 +25,8 @@ class MapCreator implements IMapCreator {
     private BufferedImage goombaLeft, goombaRight, koopaLeft, koopaRight, endFlag;
 
 
-    MapCreator(){}
+       @Inject
+       public MapCreator(){}
     public void setMapCreator(IImageLoader imageLoader) {
 
         this.imageLoader = imageLoader;
