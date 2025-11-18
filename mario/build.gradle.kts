@@ -1,5 +1,5 @@
 plugins {
-    java
+    application
 }
 
 group = "be.ecam"
@@ -27,3 +27,9 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+application {
+    // Define the main class for the application.
+    mainClass = "manager.GameEngine"
+}
+
