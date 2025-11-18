@@ -1,6 +1,6 @@
 package view;
 
-import manager.GameEngine;
+import manager.IGameEngine;
 import java.awt.image.BufferedImage;
 
 public class ImageResourceManager {
@@ -8,7 +8,7 @@ public class ImageResourceManager {
     private final BufferedImage startScreenImage, aboutScreenImage, helpScreenImage, gameOverScreen;
     private final BufferedImage heartIcon, coinIcon, selectIcon;
 
-    public ImageResourceManager(GameEngine engine) {
+    public ImageResourceManager(IGameEngine engine) {
         IImageLoader loader = engine.getImageLoader();
         BufferedImage sprite = loader.loadImage("/sprite.png");
 

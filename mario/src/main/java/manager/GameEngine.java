@@ -8,7 +8,7 @@ import view.UIManager;
 import javax.swing.*;
 import java.awt.*;
 
-public class GameEngine implements Runnable, IMarioEngineFacade {
+public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
 
     private final static int WIDTH = 1268, HEIGHT = 708;
 
@@ -231,6 +231,21 @@ public class GameEngine implements Runnable, IMarioEngineFacade {
 
     public IMapManager getMapManager() {
         return mapManager;
+    }
+
+    // IGameEngine: input routing without exposing UIManager
+    @Override
+    public void receiveInput(ButtonAction action) {
+        if (uiManager != null && action != null) {
+            uiManager.receiveInput(action);
+        }
+    }
+
+    @Override
+    public void selectMapViaMouse() {
+        if (uiManager != null) {
+            uiManager.selectMapViaMouse();
+        }
     }
 
     public static void main(String... args) {
