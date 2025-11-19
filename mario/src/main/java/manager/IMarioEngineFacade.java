@@ -11,4 +11,5 @@ public interface IMarioEngineFacade {
     void playMarioDies();
     void shakeCamera();
     IImageLoader getImageLoader();
+    void playFireball();
 }

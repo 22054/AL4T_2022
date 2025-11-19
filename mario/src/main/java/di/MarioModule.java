@@ -2,6 +2,7 @@ package di;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 import javax.inject.Singleton;
 
 import manager.*;
@@ -9,33 +10,47 @@ import view.IImageLoader;
 import view.ImageLoader;
 
 @Module
-public interface MarioModule {
+public abstract class MarioModule {
 
     @Binds
     @Singleton
-    ICamera bindCamera(Camera impl);
+    abstract ICamera bindCamera(Camera impl);
 
     @Binds
     @Singleton
-    ISoundManager bindSoundManager(SoundManager impl);
+    abstract ISoundManager bindSoundManager(SoundManager impl);
 
     @Binds
     @Singleton
-    IImageLoader bindImageLoader(ImageLoader impl);
+    abstract IImageLoader bindImageLoader(ImageLoader impl);
 
     @Binds
     @Singleton
-    IMapCreator bindMapCreator(MapCreator impl);
+    abstract IMapCreator bindMapCreator(MapCreator impl);
 
     @Binds
     @Singleton
-    IMapManager bindMapManager(MapManager impl);
+    abstract IMapManager bindMapManager(MapManager impl);
 
     @Binds
     @Singleton
-    IMarioEngineFacade bindMarioEngineFacade(GameEngine impl);
+    abstract IMarioEngineFacade bindMarioEngineFacade(GameEngine impl);
 
     @Binds
     @Singleton
-    IGameEngine bindGameEngine(GameEngine impl);
+    abstract IGameEngine bindGameEngine(GameEngine impl);
+
+    @Provides
+    @Singleton
+    @ScreenWidth
+    static int provideScreenWidth() {
+        return 1268;
+    }
+
+    @Provides
+    @Singleton
+    @ScreenHeight
+    static int provideScreenHeight() {
+        return 708;
+    }
 }

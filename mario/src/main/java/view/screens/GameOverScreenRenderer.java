@@ -1,23 +1,24 @@
 package view.screens;
 
+import manager.IGameEngine;
 import view.UIManager;
 import view.ImageResourceManager;
-import manager.GameEngine;
 
 import java.awt.*;
 
 public class GameOverScreenRenderer implements ScreenRenderer {
 
-    private UIManager uiManager;
+    private final UIManager uiManager;
+    private final IGameEngine engine;
 
-    public GameOverScreenRenderer(UIManager uiManager) {
+    public GameOverScreenRenderer(UIManager uiManager, IGameEngine engine) {
         this.uiManager = uiManager;
+        this.engine = engine;
     }
 
     @Override
     public void render(Graphics2D g2) {
         ImageResourceManager irm = uiManager.getImageResourceManager();
-        GameEngine engine = uiManager.getGameEngine();
 
         g2.drawImage(irm.getGameOverScreen(), 0, 0, null);
         g2.setFont(uiManager.getGameFont().deriveFont(50f));

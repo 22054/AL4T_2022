@@ -8,13 +8,12 @@ import view.UIManager;
 import javax.inject.Singleton;
 import java.awt.*;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import di.DaggerMarioComponent;
 
 @Singleton
 public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
-
-    private final static int WIDTH = 1268, HEIGHT = 708;
 
     public IMapManager mapManager;
     public UIManager uiManager;
@@ -24,15 +23,16 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     public ICamera camera;
     private final IImageLoader imageLoader;
     private Thread thread;
+    private final Provider<UIManager> uiManagerProvider;
 
     @Inject
-    public GameEngine(ICamera camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
+    public GameEngine(ICamera camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager, Provider<UIManager> uiManagerProvider) {
         this.imageLoader = imageLoader;
         this.camera = camera;
         gameStatus = GameStatus.START_SCREEN;
-        uiManager = new UIManager(this, WIDTH, HEIGHT);
         this.soundManager = soundManager;
         this.mapManager = mapManager;
+        this.uiManagerProvider = uiManagerProvider;
     }
 
     @Override
@@ -99,6 +99,10 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     private void render() {
+        // Lazy-create UI to avoid circular construction with DI
+        if (uiManager == null) {
+            uiManager = uiManagerProvider.get();
+        }
         uiManager.repaint();
     }
 
@@ -235,6 +239,11 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
 
     public IMapManager getMapManager() {
         return mapManager;
+    }
+
+    @Override
+    public ICamera getCamera() {
+        return camera;
     }
 
     // IGameEngine: input routing without exposing UIManager

@@ -1,9 +1,8 @@
 package view;
 
-import manager.ButtonAction;
-import manager.GameEngine;
-import manager.GameStatus;
-import manager.InputManager;
+import di.ScreenHeight;
+import di.ScreenWidth;
+import manager.*;
 import model.hero.Mario;
 import view.screens.ScreenRenderer;
 import view.screens.StartScreenRenderer;
@@ -14,15 +13,17 @@ import view.screens.GameOverScreenRenderer;
 import view.screens.PauseScreenRenderer;
 import view.screens.VictoryScreenRenderer;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Singleton
 public class UIManager extends JPanel{
 
-    private final GameEngine engine;
+    private final IGameEngine engine;
     private Font gameFont;
     private final ImageResourceManager imageResourceManager;
     private final ScreenRenderer startScreenRenderer;
@@ -36,16 +37,14 @@ public class UIManager extends JPanel{
     public int selectedMap = 0;
     public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
 
-    @Singleton
-    public UIManager(GameEngine engine, int width, int height) {
+    @Inject
+    public UIManager(IGameEngine engine, InputManager inputManager, @ScreenWidth int width, @ScreenHeight int height) {
         // Assign engine early to avoid paint being called with a null engine
         this.engine = engine;
 
         setPreferredSize(new Dimension(width, height));
         setMaximumSize(new Dimension(width, height));
         setMinimumSize(new Dimension(width, height));
-
-        InputManager inputManager = new InputManager(engine);
 
         JFrame frame = new JFrame("Super Mario Bros.");
         frame.add(this);
@@ -66,7 +65,7 @@ public class UIManager extends JPanel{
         this.mapSelectionScreenRenderer = new MapSelectionScreenRenderer(this);
         this.aboutScreenRenderer = new AboutScreenRenderer(this);
         this.helpScreenRenderer = new HelpScreenRenderer(this);
-        this.gameOverScreenRenderer = new GameOverScreenRenderer(this);
+        this.gameOverScreenRenderer = new GameOverScreenRenderer(this, engine);
         this.pauseScreenRenderer = new PauseScreenRenderer(this);
         this.victoryScreenRenderer = new VictoryScreenRenderer(this);
 
@@ -121,10 +120,6 @@ public class UIManager extends JPanel{
         return this.imageResourceManager;
     }
 
-    public GameEngine getGameEngine() {
-        return this.engine;
-    }
-
     public Font getGameFont() {
         return gameFont;
     }
@@ -155,8 +150,9 @@ public class UIManager extends JPanel{
     }
 
     public void receiveInput(ButtonAction input) {
+        GameStatus gameStatus = engine.getGameStatus();
 
-        if (engine.gameStatus == GameStatus.START_SCREEN) {
+        if (gameStatus == GameStatus.START_SCREEN) {
             if (input == ButtonAction.SELECT && startScreenSelection == StartScreenSelection.START_GAME) {
                 engine.startGame();
             } else if (input == ButtonAction.SELECT && startScreenSelection == StartScreenSelection.VIEW_ABOUT) {
@@ -169,7 +165,7 @@ public class UIManager extends JPanel{
                 selectOption(false);
             }
         }
-        else if(engine.gameStatus == GameStatus.MAP_SELECTION){
+        else if(gameStatus == GameStatus.MAP_SELECTION){
             if(input == ButtonAction.SELECT){
                 selectMapViaKeyboard();
             }
@@ -179,28 +175,28 @@ public class UIManager extends JPanel{
             else if(input == ButtonAction.GO_DOWN){
                 changeSelectedMap(false);
             }
-        } else if (engine.gameStatus == GameStatus.RUNNING) {
-            Mario mario = engine.mapManager.getMario();
+        } else if (gameStatus == GameStatus.RUNNING) {
+            Mario mario = engine.getMapManager().getMario();
             if (input == ButtonAction.JUMP) {
                 mario.jump(engine);
             } else if (input == ButtonAction.M_RIGHT) {
-                mario.move(true, engine.camera);
+                mario.move(true, engine.getCamera());
             } else if (input == ButtonAction.M_LEFT) {
-                mario.move(false, engine.camera);
+                mario.move(false, engine.getCamera());
             } else if (input == ButtonAction.ACTION_COMPLETED) {
                 mario.setVelX(0);
             } else if (input == ButtonAction.FIRE) {
-                engine.mapManager.fire(engine);
+                engine.getMapManager().fire(engine);
             } else if (input == ButtonAction.PAUSE_RESUME) {
                 engine.pauseGame();
             }
-        } else if (engine.gameStatus == GameStatus.PAUSED) {
+        } else if (gameStatus == GameStatus.PAUSED) {
             if (input == ButtonAction.PAUSE_RESUME) {
                 engine.pauseGame();
             }
-        } else if(engine.gameStatus == GameStatus.GAME_OVER && input == ButtonAction.GO_TO_START_SCREEN){
+        } else if(gameStatus == GameStatus.GAME_OVER && input == ButtonAction.GO_TO_START_SCREEN){
             engine.reset();
-        } else if(engine.gameStatus == GameStatus.MISSION_PASSED && input == ButtonAction.GO_TO_START_SCREEN){
+        } else if(gameStatus == GameStatus.MISSION_PASSED && input == ButtonAction.GO_TO_START_SCREEN){
             engine.reset();
         }
 

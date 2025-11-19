@@ -18,7 +18,7 @@ public interface IMapManager {
 
         Mario getMario();
 
-        void fire(GameEngine engine);
+        void fire(IMarioEngineFacade engine);
 
         boolean isGameOver();
 

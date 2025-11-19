@@ -66,7 +66,7 @@ public class MapManager implements IMapManager {
     }
 
     @Override
-    public void fire(GameEngine engine) {
+    public void fire(IMarioEngineFacade engine) {
         Fireball fireball = getMario().fire();
         if (fireball != null) {
             map.addFireball(fireball);
