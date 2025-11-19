@@ -2,12 +2,12 @@ package di;
 
 import dagger.Component;
 import javax.inject.Singleton;
-import manager.GameEngine;
+import manager.IGameEngine;
 
 @Singleton
 @Component(modules = {MarioModule.class})
 public interface MarioComponent {
-    GameEngine gameEngine();
+    IGameEngine gameEngine();
 
     @Component.Factory
     interface Factory {

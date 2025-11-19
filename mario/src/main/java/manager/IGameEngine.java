@@ -7,6 +7,7 @@ import view.IImageLoader;
  * without depending on the concrete GameEngine implementation.
  */
 public interface IGameEngine {
+    void start();
     GameStatus getGameStatus();
     IImageLoader getImageLoader();
 

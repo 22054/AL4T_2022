@@ -31,11 +31,10 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
         uiManager = new UIManager(this, WIDTH, HEIGHT);
         this.soundManager = soundManager;
         this.mapManager = mapManager;
-
-        start();
     }
 
-    private synchronized void start() {
+    @Override
+    public synchronized void start() {
         if (isRunning)
             return;
 
@@ -253,8 +252,7 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
 
     public static void main(String... args) {
         di.MarioComponent component = DaggerMarioComponent.create();
-        // Constructing the engine starts the game as per constructor
-        component.gameEngine();
+        component.gameEngine().start();
     }
 
     public int getRemainingTime() {
