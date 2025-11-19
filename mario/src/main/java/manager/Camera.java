@@ -1,7 +1,9 @@
 package manager;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class Camera implements CameraInterface {
 
     private double x, y;

@@ -14,7 +14,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class MapCreator implements IMapCreator {
 
     private IImageLoader imageLoader;

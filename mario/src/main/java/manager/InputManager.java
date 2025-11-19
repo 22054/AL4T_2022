@@ -1,11 +1,13 @@
 package manager;
 
+import javax.inject.Singleton;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 
+@Singleton
 public record InputManager(IGameEngine engine) implements KeyListener, MouseListener {
 
     @Override

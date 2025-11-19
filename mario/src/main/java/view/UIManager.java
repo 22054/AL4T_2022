@@ -14,6 +14,7 @@ import view.screens.GameOverScreenRenderer;
 import view.screens.PauseScreenRenderer;
 import view.screens.VictoryScreenRenderer;
 
+import javax.inject.Singleton;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class UIManager extends JPanel{
     public int selectedMap = 0;
     public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
 
+    @Singleton
     public UIManager(GameEngine engine, int width, int height) {
         // Assign engine early to avoid paint being called with a null engine
         this.engine = engine;

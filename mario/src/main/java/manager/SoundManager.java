@@ -1,5 +1,6 @@
 package manager;
 
+import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -7,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import javax.inject.Inject;
 
+@Singleton
 public class SoundManager implements ISoundManager {
 
     private final Clip background;

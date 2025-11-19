@@ -4,7 +4,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class ImageLoader implements IImageLoader {
 
     private final BufferedImage marioForms;

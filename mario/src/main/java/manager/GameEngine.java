@@ -5,12 +5,14 @@ import model.hero.Mario;
 import view.IImageLoader;
 import view.UIManager;
 
+import javax.inject.Singleton;
 import javax.swing.*;
 import java.awt.*;
 import javax.inject.Inject;
 
 import di.DaggerMarioComponent;
 
+@Singleton
 public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
 
     private final static int WIDTH = 1268, HEIGHT = 708;
