@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Camera implements CameraInterface {
+public class Camera implements ICamera {
 
     private double x, y;
     private int frameNumber;

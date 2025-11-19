@@ -13,7 +13,7 @@ public interface MarioModule {
 
     @Binds
     @Singleton
-    CameraInterface bindCamera(Camera impl);
+    ICamera bindCamera(Camera impl);
 
     @Binds
     @Singleton

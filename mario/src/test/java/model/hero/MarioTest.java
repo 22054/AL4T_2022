@@ -1,6 +1,6 @@
 package model.hero;
 
-import manager.CameraInterface;
+import manager.ICamera;
 import manager.IMarioEngineFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class MarioTest {
     @Test
     void moveRightSetsPositiveVelocity() {
         Mario mario = new Mario(0, 0, imageLoader);
-        CameraInterface camera = mock(CameraInterface.class);
+        ICamera camera = mock(ICamera.class);
         when(camera.getX()).thenReturn(0.0);
 
         mario.move(true, camera);
@@ -48,7 +48,7 @@ public class MarioTest {
     @Test
     void moveLeftBlocksWhenBehindCamera() {
         Mario mario = new Mario(100, 0, imageLoader);
-        CameraInterface camera = mock(CameraInterface.class);
+        ICamera camera = mock(ICamera.class);
         when(camera.getX()).thenReturn(150.0);
 
         mario.move(false, camera);

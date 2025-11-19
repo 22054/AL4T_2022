@@ -6,7 +6,6 @@ import view.IImageLoader;
 import view.UIManager;
 
 import javax.inject.Singleton;
-import javax.swing.*;
 import java.awt.*;
 import javax.inject.Inject;
 
@@ -22,12 +21,12 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     private final ISoundManager soundManager;
     public GameStatus gameStatus;
     private boolean isRunning;
-    public CameraInterface camera;
+    public ICamera camera;
     private final IImageLoader imageLoader;
     private Thread thread;
 
     @Inject
-    public GameEngine(CameraInterface camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
+    public GameEngine(ICamera camera, IImageLoader imageLoader, ISoundManager soundManager, IMapManager mapManager) {
         this.imageLoader = imageLoader;
         this.camera = camera;
         gameStatus = GameStatus.START_SCREEN;

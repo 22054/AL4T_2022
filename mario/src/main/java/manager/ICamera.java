@@ -1,6 +1,6 @@
 package manager;
 
-public interface CameraInterface {
+public interface ICamera {
     double getX();
     double getY();
     void setX(double x);
