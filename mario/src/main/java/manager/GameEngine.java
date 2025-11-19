@@ -1,5 +1,6 @@
 package manager;
 
+import di.MarioComponent;
 import model.hero.Mario;
 import view.IImageLoader;
 import view.UIManager;
@@ -251,7 +252,7 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     public static void main(String... args) {
-        di.MarioComponent component = DaggerMarioComponent.create();
+        MarioComponent component = DaggerMarioComponent.create();
         component.gameEngine().start();
     }
 

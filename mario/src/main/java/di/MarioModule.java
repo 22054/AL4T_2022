@@ -3,6 +3,7 @@ package di;
 import dagger.Binds;
 import dagger.Module;
 import javax.inject.Singleton;
+
 import manager.*;
 import view.IImageLoader;
 import view.ImageLoader;
@@ -12,7 +13,7 @@ public interface MarioModule {
 
     @Binds
     @Singleton
-    CameraInterface bindCamera(manager.Camera impl);
+    CameraInterface bindCamera(Camera impl);
 
     @Binds
     @Singleton
