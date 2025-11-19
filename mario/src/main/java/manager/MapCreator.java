@@ -27,8 +27,10 @@ public class MapCreator implements IMapCreator {
     private BufferedImage goombaLeft, goombaRight, koopaLeft, koopaRight, endFlag;
 
 
-       @Inject
-       public MapCreator(){}
+    @Inject
+    public MapCreator() {
+    }
+
     public void setMapCreator(IImageLoader imageLoader) {
 
         this.imageLoader = imageLoader;
@@ -36,8 +38,8 @@ public class MapCreator implements IMapCreator {
 
         this.backgroundImage = imageLoader.loadImage("/background.png");
         this.superMushroom = imageLoader.getSubImage(sprite, 2, 5, 48, 48);
-        this.oneUpMushroom= imageLoader.getSubImage(sprite, 3, 5, 48, 48);
-        this.fireFlower= imageLoader.getSubImage(sprite, 4, 5, 48, 48);
+        this.oneUpMushroom = imageLoader.getSubImage(sprite, 3, 5, 48, 48);
+        this.fireFlower = imageLoader.getSubImage(sprite, 4, 5, 48, 48);
         this.coin = imageLoader.getSubImage(sprite, 1, 5, 48, 48);
         this.ordinaryBrick = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         this.surpriseBrick = imageLoader.getSubImage(sprite, 2, 1, 48, 48);
@@ -62,7 +64,7 @@ public class MapCreator implements IMapCreator {
 
         Map createdMap = new Map(timeLimit, backgroundImage);
         String[] paths = mapPath.split("/");
-        createdMap.setPath(paths[paths.length-1]);
+        createdMap.setPath(paths[paths.length - 1]);
 
         int pixelMultiplier = 48;
 
@@ -79,42 +81,35 @@ public class MapCreator implements IMapCreator {
             for (int y = 0; y < mapImage.getHeight(); y++) {
 
                 int currentPixel = mapImage.getRGB(x, y);
-                int xLocation = x*pixelMultiplier;
-                int yLocation = y*pixelMultiplier;
+                int xLocation = x * pixelMultiplier;
+                int yLocation = y * pixelMultiplier;
 
                 if (currentPixel == ordinaryBrick) {
                     Brick brick = new OrdinaryBrick(xLocation, yLocation, this.ordinaryBrick, this.imageLoader);
                     createdMap.addBrick(brick);
-                }
-                else if (currentPixel == surpriseBrick) {
+                } else if (currentPixel == surpriseBrick) {
                     Prize prize = generateRandomPrize(xLocation, yLocation);
                     Brick brick = new SurpriseBrick(xLocation, yLocation, this.surpriseBrick, prize);
                     createdMap.addBrick(brick);
-                }
-                else if (currentPixel == pipe) {
+                } else if (currentPixel == pipe) {
                     Brick brick = new Pipe(xLocation, yLocation, this.pipe);
                     createdMap.addGroundBrick(brick);
-                }
-                else if (currentPixel == groundBrick) {
+                } else if (currentPixel == groundBrick) {
                     Brick brick = new GroundBrick(xLocation, yLocation, this.groundBrick);
                     createdMap.addGroundBrick(brick);
-                }
-                else if (currentPixel == goomba) {
+                } else if (currentPixel == goomba) {
                     Goomba enemy = new Goomba(xLocation, yLocation, this.goombaLeft);
                     enemy.setRightImage(goombaRight);
                     createdMap.addEnemy(enemy);
-                }
-                else if (currentPixel == koopa) {
+                } else if (currentPixel == koopa) {
                     KoopaTroopa enemy = new KoopaTroopa(xLocation, yLocation, this.koopaLeft);
                     enemy.setRightImage(koopaRight);
                     createdMap.addEnemy(enemy);
-                }
-                else if (currentPixel == mario) {
+                } else if (currentPixel == mario) {
                     Mario marioObject = new Mario(xLocation, yLocation, this.imageLoader);
                     createdMap.setMario(marioObject);
-                }
-                else if(currentPixel == end){
-                    EndFlag endPoint= new EndFlag(xLocation+24, yLocation, endFlag);
+                } else if (currentPixel == end) {
+                    EndFlag endPoint = new EndFlag(xLocation + 24, yLocation, endFlag);
                     createdMap.setEndPoint(endPoint);
                 }
             }
@@ -124,20 +119,17 @@ public class MapCreator implements IMapCreator {
         return createdMap;
     }
 
-    private Prize generateRandomPrize(double x, double y){
+    private Prize generateRandomPrize(double x, double y) {
         Prize generated;
-        int random = (int)(Math.random() * 12);
+        int random = (int) (Math.random() * 12);
 
-        if(random == 0){ //super mushroom
+        if (random == 0) { //super mushroom
             generated = new SuperMushroom(x, y, this.superMushroom);
-        }
-        else if(random == 1){ //fire flower
+        } else if (random == 1) { //fire flower
             generated = new FireFlower(x, y, this.fireFlower);
-        }
-        else if(random == 2){ //one up mushroom
+        } else if (random == 2) { //one up mushroom
             generated = new OneUpMushroom(x, y, this.oneUpMushroom);
-        }
-        else{ //coin
+        } else { //coin
             generated = new Coin(x, y, this.coin, 50);
         }
 
