@@ -7,4 +7,5 @@ public interface ICamera {
     void setY(double y);
     void shakeCamera();
     void moveCam(double xAmount, double yAmount);
+    void reset();
 }

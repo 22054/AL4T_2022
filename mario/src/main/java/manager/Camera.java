@@ -53,4 +53,12 @@ public class Camera implements ICamera {
         if(frameNumber < 0)
             shaking = false;
     }
+
+    @Override
+    public void reset() {
+        this.x = 0;
+        this.y = 0;
+        this.frameNumber = 25;
+        this.shaking = false;
+    }
 }

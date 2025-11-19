@@ -51,7 +51,7 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     public void resetCamera(){
-        camera = new Camera();
+        camera.reset();
         soundManager.restartBackground();
     }
 
