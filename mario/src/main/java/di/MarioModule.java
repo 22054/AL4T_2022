@@ -2,7 +2,7 @@ package di;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
+
 import javax.inject.Singleton;
 
 import manager.*;
@@ -39,18 +39,4 @@ public abstract class MarioModule {
     @Binds
     @Singleton
     abstract IGameEngine bindGameEngine(GameEngine impl);
-
-    @Provides
-    @Singleton
-    @ScreenWidth
-    static int provideScreenWidth() {
-        return 1268;
-    }
-
-    @Provides
-    @Singleton
-    @ScreenHeight
-    static int provideScreenHeight() {
-        return 708;
-    }
 }

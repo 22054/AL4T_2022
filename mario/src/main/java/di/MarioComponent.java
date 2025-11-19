@@ -1,5 +1,6 @@
 package di;
 
+import dagger.BindsInstance;
 import dagger.Component;
 import javax.inject.Singleton;
 import manager.IGameEngine;
@@ -9,8 +10,12 @@ import manager.IGameEngine;
 public interface MarioComponent {
     IGameEngine gameEngine();
 
-    @Component.Factory
-    interface Factory {
-        MarioComponent create();
+    @Component.Builder
+    interface Builder {
+        MarioComponent build();
+        @BindsInstance
+        Builder screenWidth(@ScreenWidth int width);
+        @BindsInstance
+        Builder screenHeight(@ScreenHeight int height);
     }
 }

@@ -45,24 +45,22 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
         thread.start();
     }
 
-    public void reset(){
+    public void reset() {
         resetCamera();
         setGameStatus(GameStatus.START_SCREEN);
     }
 
-    public void resetCamera(){
+    public void resetCamera() {
         camera.reset();
         soundManager.restartBackground();
     }
 
     public void createMap(String path) {
         boolean loaded = mapManager.createMap(imageLoader, path);
-        if(loaded){
+        if (loaded) {
             setGameStatus(GameStatus.RUNNING);
             soundManager.restartBackground();
-        }
-
-        else
+        } else
             setGameStatus(GameStatus.START_SCREEN);
     }
 
@@ -87,7 +85,7 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
             }
             render();
 
-            if(gameStatus != GameStatus.RUNNING) {
+            if (gameStatus != GameStatus.RUNNING) {
                 timer = System.currentTimeMillis();
             }
 
@@ -116,10 +114,10 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
         }
 
         int missionPassed = passMission();
-        if(missionPassed > -1){
+        if (missionPassed > -1) {
             mapManager.acquirePoints(missionPassed);
             //setGameStatus(GameStatus.MISSION_PASSED);
-        } else if(mapManager.endLevel())
+        } else if (mapManager.endLevel())
             setGameStatus(GameStatus.MISSION_PASSED);
     }
 
@@ -159,12 +157,12 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
         }
     }
 
-    public void shakeCamera(){
+    public void shakeCamera() {
         camera.shakeCamera();
     }
 
     private boolean isGameOver() {
-        if(gameStatus == GameStatus.RUNNING)
+        if (gameStatus == GameStatus.RUNNING)
             return mapManager.isGameOver();
         return false;
     }
@@ -198,10 +196,10 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     public Point getCameraLocation() {
-        return new Point((int)camera.getX(), (int)camera.getY());
+        return new Point((int) camera.getX(), (int) camera.getY());
     }
 
-    private int passMission(){
+    private int passMission() {
         return mapManager.passMission();
     }
 
@@ -262,7 +260,10 @@ public class GameEngine implements Runnable, IMarioEngineFacade, IGameEngine {
     }
 
     public static void main(String... args) {
-        MarioComponent component = DaggerMarioComponent.create();
+        MarioComponent component = DaggerMarioComponent.builder().
+                screenHeight(708)
+                .screenWidth(1268)
+                .build();
         component.gameEngine().start();
     }
 
