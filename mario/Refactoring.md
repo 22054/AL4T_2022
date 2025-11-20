@@ -38,7 +38,7 @@ Big "if-else".
 
 ## Dependency Injection
 
-### Dagger 2 integration (mario module)
+### Dagger 2 integration
 
 We integrated dependency injection using Dagger (core, platform-agnostic) in the `mario` module to formalize and centralize wiring:
 
@@ -60,6 +60,8 @@ Constructors annotated with `@Inject`:
 - `manager.MapCreator` (also made `public`)
 - `manager.MapManager`
 - `manager.GameEngine`
+- `manager.InputManager`
+- `view.UIManager`
 
 Bootstrap:
 
